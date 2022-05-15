@@ -5,6 +5,8 @@ const { body, validationResult } = require('express-validator');
 const app = express();
 const port = 3000;
 
+let data = [];
+
 // create application/json parser
 var jsonParser = bodyParser.json();
 
@@ -16,7 +18,7 @@ app.get('/', (req, res) => {
   console.log('get');
 
   res.send('<form method="POST">' +
-  '<input type="text" name="username" />' +
+  '<input type="text" name="username" value="' + data[0]?.username + '" />' +
   '<input type="submit" value="Click Me!" />' +
   '</form>');
 });
@@ -25,6 +27,7 @@ app.post('/', urlencodedParser, (req, res) => {
   console.log('post');
   console.log(req.body.username);
   // console.log(body('username'));
+  data.push({ username: req.body.username });
 
   // console.log(body('username').toDate());
   const errors = validationResult(req);
@@ -36,7 +39,7 @@ app.post('/', urlencodedParser, (req, res) => {
 
   // console.log(req.params);
   res.send('<form method="POST">' +
-  '<input type="text" name="username" />' +
+  '<input type="text" name="username" value="' + data[0]?.username + '" />' +
   '<input type="submit" value="Click Me!" />' +
   '</form>');
 });
