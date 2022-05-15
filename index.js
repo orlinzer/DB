@@ -1,0 +1,46 @@
+const express = require('express');
+const bodyParser = require('body-parser');
+const { body, validationResult } = require('express-validator');
+
+const app = express();
+const port = 3000;
+
+// create application/json parser
+var jsonParser = bodyParser.json();
+
+// create application/x-www-form-urlencoded parser
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
+
+app.get('/', (req, res) => {
+  // console.log(req.params);
+  console.log('get');
+
+  res.send('<form method="POST">' +
+  '<input type="text" name="username" />' +
+  '<input type="submit" value="Click Me!" />' +
+  '</form>');
+});
+
+app.post('/', urlencodedParser, (req, res) => {
+  console.log('post');
+  console.log(req.body.username);
+  // console.log(body('username'));
+
+  // console.log(body('username').toDate());
+  const errors = validationResult(req);
+  // console.log(errors.formatter(''));
+
+  // if (!errors.isEmpty()) {
+  //   console.log(req.params);
+  // }
+
+  // console.log(req.params);
+  res.send('<form method="POST">' +
+  '<input type="text" name="username" />' +
+  '<input type="submit" value="Click Me!" />' +
+  '</form>');
+});
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
+});
