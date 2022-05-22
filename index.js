@@ -12,7 +12,17 @@ let data = [];
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-const render = () => ();
+const render = () => (
+  '<form method="POST">' +
+  '<input type="text" name="username" value="' + data[0]?.username + '" />' +
+  '<input type="submit" value="Click Me!" />' +
+  '</form>' +
+  '<form method="POST">' +
+  '<input type="text" name="username" value="' + data[0]?.username + '" />' +
+  '<input type="submit" value="Click Me!" />' +
+  '</form>' +
+  dataResult
+);
 
 // create application/x-www-form-urlencoded parser
 // var urlencodedParser = bodyParser.urlencoded({ extended: false });
@@ -21,10 +31,7 @@ app.get('/', (req, res) => {
   // console.log(req.params);
   console.log('get');
 
-  res.send('<form method="POST">' +
-  '<input type="text" name="username" value="' + data[0]?.username + '" />' +
-  '<input type="submit" value="Click Me!" />' +
-  '</form>');
+  res.send(render());
 });
 
 // app.post('/', urlencodedParser, (req, res) => {
@@ -48,10 +55,7 @@ app.post('/', (req, res) => {
   }
 
   // console.log(req.params);
-  res.send('<form method="POST">' +
-  '<input type="text" name="username" value="' + data[0]?.username + '" />' +
-  '<input type="submit" value="Click Me!" />' +
-  '</form>' + dataResult);
+  res.send(render());
 });
 
 // app.post('/update', urlencodedParser, (req, res) => {
@@ -75,10 +79,7 @@ app.post('/update', (req, res) => {
   }
 
   // console.log(req.params);
-  res.send('<form method="POST">' +
-  '<input type="text" name="username" value="' + data[0]?.username + '" />' +
-  '<input type="submit" value="Click Me!" />' +
-  '</form>' + dataResult);
+  res.send(render());
 });
 
 // app.post('/update', urlencodedParser, (req, res) => {
@@ -102,10 +103,7 @@ app.post('/delete', (req, res) => {
   }
 
   // console.log(req.params);
-  res.send('<form method="POST">' +
-  '<input type="text" name="username" value="' + data[0]?.username + '" />' +
-  '<input type="submit" value="Click Me!" />' +
-  '</form>' + dataResult);
+  res.send(render());
 });
 
 app.listen(port, () => {
