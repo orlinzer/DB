@@ -8,10 +8,12 @@ const port = 3000;
 let data = [];
 
 // create application/json parser
-var jsonParser = bodyParser.json();
+// var jsonParser = bodyParser.json();
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 // create application/x-www-form-urlencoded parser
-var urlencodedParser = bodyParser.urlencoded({ extended: false });
+// var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 app.get('/', (req, res) => {
   // console.log(req.params);
@@ -23,7 +25,8 @@ app.get('/', (req, res) => {
   '</form>');
 });
 
-app.post('/', urlencodedParser, (req, res) => {
+// app.post('/', urlencodedParser, (req, res) => {
+app.post('/', (req, res) => {
   console.log('post');
   console.log(req.body.username);
   // console.log(body('username'));
@@ -49,7 +52,8 @@ app.post('/', urlencodedParser, (req, res) => {
   '</form>' + dataResult);
 });
 
-app.post('/update', urlencodedParser, (req, res) => {
+// app.post('/update', urlencodedParser, (req, res) => {
+app.post('/update', (req, res) => {
   console.log('post');
   console.log(req.body.username);
   // console.log(body('username'));
