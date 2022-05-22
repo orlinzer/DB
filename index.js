@@ -12,7 +12,7 @@ let data = [];
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-const render = () => {};
+const render = () => ();
 
 // create application/x-www-form-urlencoded parser
 // var urlencodedParser = bodyParser.urlencoded({ extended: false });
