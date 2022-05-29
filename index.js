@@ -13,33 +13,49 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 const render = () => (
-  '<form method="POST">' +
-  '<input type="text" name="username" value="' + data[0]?.username + '" />' +
-  '<input type="submit" value="Click Me!" />' +
+  '<h1>Add</h1>' +
+  '<form method="POST" action="/add">' +
+  '<input type="text" name="username" value="" />' +
+  '<input type="submit" value="Add" />' +
   '</form>' +
-  '<form method="POST">' +
-  '<input type="text" name="username" value="' + data[0]?.username + '" />' +
-  '<input type="submit" value="Click Me!" />' +
+  '<h1>Delete</h1>' +
+  '<form method="POST" action="/delete">' +
+  '<input type="number" name="id" value="" />' +
+  '<input type="submit" value="Delete" />' +
   '</form>' +
-  dataResult
+  '<h1>Update</h1>' +
+  '<form method="POST" action="/update">' +
+  '<input type="number" name="id" value="0" />' +
+  '<input type="text" name="username" value="" />' +
+  '<input type="submit" value="Update" />' +
+  '</form>' +
+  '<h1>View</h1>' +
+  '<table>' +
+    data.map((user) => `<tr><td>${user.id}</td><td>${user.username}</td></tr>`).join() +
+  '</table>'
 );
 
 // create application/x-www-form-urlencoded parser
 // var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 app.get('/', (req, res) => {
-  // console.log(req.params);
+  console.log('get');
+
+  res.send(render());
+});
+
+app.post('/', (req, res) => {
   console.log('get');
 
   res.send(render());
 });
 
 // app.post('/', urlencodedParser, (req, res) => {
-app.post('/', (req, res) => {
+app.post('/add', (req, res) => {
   console.log('post');
   console.log(req.body.username);
   // console.log(body('username'));
-  data.push({ username: req.body.username });
+  data.push({ id: data.length, username: req.body.username });
 
   // console.log(body('username').toDate());
   const errors = validationResult(req);
@@ -63,7 +79,12 @@ app.post('/update', (req, res) => {
   console.log('post');
   console.log(req.body.username);
   // console.log(body('username'));
-  data.push({ username: req.body.username });
+  data = data.map((user) => {
+    if (user.id == req.body.id) {
+      user.username = req.body.username;
+    }
+    return user;
+  });
 
   // console.log(body('username').toDate());
   const errors = validationResult(req);
@@ -87,7 +108,7 @@ app.post('/delete', (req, res) => {
   console.log('delete');
   console.log(req.body.id);
   // console.log(body('username'));
-  data.filter((value) => value.id !== req.body.id);
+  data = data.filter((user) => user.id != req.body.id);
 
   // console.log(body('username').toDate());
   const errors = validationResult(req);
