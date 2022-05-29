@@ -1,11 +1,14 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const { body, validationResult } = require('express-validator');
+
+import express from 'express';
+import bodyParser from 'body-parser';
+import { body, validationResult } from 'express-validator';
+import { v4 as uuid } from 'uuid';
+import User from './models/User/User.js';
 
 const app = express();
 const port = 3000;
 
-let data = [];
+let users = [];
 
 // create application/json parser
 // var jsonParser = bodyParser.json();
@@ -16,11 +19,12 @@ const render = () => (
   '<h1>Add</h1>' +
   '<form method="POST" action="/add">' +
   '<input type="text" name="username" value="" />' +
+  '<input type="password" name="password" value="" />' +
   '<input type="submit" value="Add" />' +
   '</form>' +
   '<h1>Delete</h1>' +
   '<form method="POST" action="/delete">' +
-  '<input type="number" name="id" value="" />' +
+  '<input type="number" name="id" value="0" />' +
   '<input type="submit" value="Delete" />' +
   '</form>' +
   '<h1>Update</h1>' +
@@ -31,7 +35,7 @@ const render = () => (
   '</form>' +
   '<h1>View</h1>' +
   '<table>' +
-    data.map((user) => `<tr><td>${user.id}</td><td>${user.username}</td></tr>`).join() +
+    users.map((user) => user.render()).join() +
   '</table>'
 );
 
@@ -55,7 +59,14 @@ app.post('/add', (req, res) => {
   console.log('post');
   console.log(req.body.username);
   // console.log(body('username'));
-  data.push({ id: data.length, username: req.body.username });
+  users.push(new User(
+    uuid(),
+    req.body.username,
+    req.body.password,
+    '',
+    '',
+    '',
+    '',));
 
   // console.log(body('username').toDate());
   const errors = validationResult(req);
@@ -65,9 +76,9 @@ app.post('/add', (req, res) => {
   //   console.log(req.params);
   // }
 
-  let dataResult = '';
-  for (let index = 0; index < data.length; index++) {
-    dataResult += index + ' ' + data[index].username + '<br/>';
+  let usersResult = '';
+  for (let index = 0; index < users.length; index++) {
+    usersResult += index + ' ' + users[index].username + '<br/>';
   }
 
   // console.log(req.params);
@@ -79,7 +90,7 @@ app.post('/update', (req, res) => {
   console.log('post');
   console.log(req.body.username);
   // console.log(body('username'));
-  data = data.map((user) => {
+  users = users.map((user) => {
     if (user.id == req.body.id) {
       user.username = req.body.username;
     }
@@ -94,9 +105,9 @@ app.post('/update', (req, res) => {
   //   console.log(req.params);
   // }
 
-  let dataResult = '';
-  for (let index = 0; index < data.length; index++) {
-    dataResult += index + ' ' + data[index].username + '<br/>';
+  let usersResult = '';
+  for (let index = 0; index < users.length; index++) {
+    usersResult += index + ' ' + users[index].username + '<br/>';
   }
 
   // console.log(req.params);
@@ -108,7 +119,7 @@ app.post('/delete', (req, res) => {
   console.log('delete');
   console.log(req.body.id);
   // console.log(body('username'));
-  data = data.filter((user) => user.id != req.body.id);
+  users = users.filter((user) => user.id != req.body.id);
 
   // console.log(body('username').toDate());
   const errors = validationResult(req);
@@ -118,9 +129,9 @@ app.post('/delete', (req, res) => {
   //   console.log(req.params);
   // }
 
-  let dataResult = '';
-  for (let index = 0; index < data.length; index++) {
-    dataResult += index + ' ' + data[index].username + '<br/>';
+  let usersResult = '';
+  for (let index = 0; index < users.length; index++) {
+    usersResult += index + ' ' + users[index].username + '<br/>';
   }
 
   // console.log(req.params);
