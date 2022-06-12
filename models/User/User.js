@@ -2,7 +2,6 @@
 export class User {
 
   constructor (
-    // Primary key
     id,
     username,
     password,
