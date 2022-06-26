@@ -2,7 +2,6 @@
 export class User {
 
   constructor (
-    id,
     username,
     password,
     email,
@@ -10,8 +9,6 @@ export class User {
     address,
     picture
   ) {
-    // Primary key
-    this.id = id;
 
     // Authentication
     this.username = username;
@@ -28,7 +25,6 @@ export class User {
 
   render () {
     return `<tr>
-      <td>${this.id}</td>
       <td>${this.username}</td>
       <td>${this.password}</td>
       <td>${this.email}</td>

@@ -18,19 +18,22 @@ app.use(express.urlencoded({ extended: false }));
 const render = () => (
   '<h1>Add</h1>' +
   '<form method="POST" action="/add">' +
-  '<input type="text" name="username" value="" />' +
-  '<input type="password" name="password" value="" />' +
+  '<input type="text" name="username" value="" placeholder="Username" />' +
+  '<input type="password" name="password" value="" placeholder="Password" />' +
   '<input type="submit" value="Add" />' +
   '</form>' +
   '<h1>Delete</h1>' +
   '<form method="POST" action="/delete">' +
-  '<input type="number" name="id" value="0" />' +
+  '<input type="text" name="username" value="" placeholder="Username" />' +
+  '<input type="password" name="password" value="" placeholder="Password" />' +
   '<input type="submit" value="Delete" />' +
   '</form>' +
   '<h1>Update</h1>' +
   '<form method="POST" action="/update">' +
-  '<input type="number" name="id" value="0" />' +
-  '<input type="text" name="username" value="" />' +
+  '<input type="text" name="username" value="" placeholder="Username" />' +
+  '<input type="password" name="password" value="" placeholder="Password" />' +
+  '<input type="text" name="new_username" value="" placeholder="New Username" />' +
+  '<input type="password" name="new_password" value="" placeholder="New Password" />' +
   '<input type="submit" value="Update" />' +
   '</form>' +
   '<h1>View</h1>' +
@@ -60,7 +63,7 @@ app.post('/add', (req, res) => {
   console.log(req.body.username);
   // console.log(body('username'));
   users.push(new User(
-    uuid(),
+    // uuid(),
     req.body.username,
     req.body.password,
     '',
@@ -91,8 +94,9 @@ app.post('/update', (req, res) => {
   console.log(req.body.username);
   // console.log(body('username'));
   users = users.map((user) => {
-    if (user.id == req.body.id) {
-      user.username = req.body.username;
+    if (user.username == req.body.username && user.password == req.body.password) {
+      user.username = req.body.new_username;
+      user.password = req.body.new_password;
     }
     return user;
   });
@@ -117,9 +121,13 @@ app.post('/update', (req, res) => {
 // app.post('/update', urlencodedParser, (req, res) => {
 app.post('/delete', (req, res) => {
   console.log('delete');
-  console.log(req.body.id);
+  console.log(req.body.username);
   // console.log(body('username'));
-  users = users.filter((user) => user.id != req.body.id);
+  // users = users.filter((user) => user.username != req.body.username);
+  users = users.filter((user) => (
+    user.username != req.body.username ||
+    user.password != req.body.password
+  ));
 
   // console.log(body('username').toDate());
   const errors = validationResult(req);
