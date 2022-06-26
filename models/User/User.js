@@ -25,12 +25,16 @@ export class User {
     this.picture = picture;
   }
 
+  setUsername (username) {
+    this.username = username;
+  }
+
   setPassword (password) {
     this.password = sha512.digest(password);
   }
 
   authentication (username, password) {
-    return this.username == username && this.password == sha512.digest(password);
+    return this.username === username && sha512.digest(password).every((value, index) => value === this.password[index]);
   }
 
   render () {
