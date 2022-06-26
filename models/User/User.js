@@ -1,3 +1,4 @@
+import { sha512 } from "js-sha512";
 
 export class User {
 
@@ -12,7 +13,8 @@ export class User {
 
     // Authentication
     this.username = username;
-    this.password = password;
+    // this.password = password;
+    this.setPassword(password);
 
     // Communication
     this.email = email;
@@ -21,6 +23,14 @@ export class User {
 
     // Additional data
     this.picture = picture;
+  }
+
+  setPassword (password) {
+    this.password = sha512.digest(password);
+  }
+
+  authentication (username, password) {
+    return this.username == username && this.password == sha512.digest(password);
   }
 
   render () {

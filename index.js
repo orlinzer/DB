@@ -94,7 +94,8 @@ app.post('/update', (req, res) => {
   console.log(req.body.username);
   // console.log(body('username'));
   users = users.map((user) => {
-    if (user.username == req.body.username && user.password == req.body.password) {
+    // if (user.username == req.body.username && user.password == req.body.password) {
+    if (user.authentication(req.body.username, req.body.password)) {
       user.username = req.body.new_username;
       user.password = req.body.new_password;
     }
@@ -124,10 +125,13 @@ app.post('/delete', (req, res) => {
   console.log(req.body.username);
   // console.log(body('username'));
   // users = users.filter((user) => user.username != req.body.username);
-  users = users.filter((user) => (
-    user.username != req.body.username ||
-    user.password != req.body.password
-  ));
+  users = users.filter((user) => !user.authentication(req.body.username, req.body.password)
+
+  // (
+  //   user.username != req.body.username ||
+  //   user.password != req.body.password
+  // )
+  );
 
   // console.log(body('username').toDate());
   const errors = validationResult(req);
